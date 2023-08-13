@@ -27,7 +27,7 @@ The dataset contains information about a fictional telecom company operating in 
 - Contract: Contract term of the customer (Month-to-Month, One Year, Two Years)
 - PaperlessBilling: Whether the customer has paperless billing (Yes, No)
 - PaymentMethod: Payment method of the customer (Electronic Check, Mailed Check, Bank Transfer (Automatic), Credit Card (Automatic))
-MonthlyCharges: Monthly amount charged to the customer
-TotalCharges: Total amount charged to the customer
-Churn: Whether the customer has churned (Yes or No)
+- MonthlyCharges: Monthly amount charged to the customer
+- TotalCharges: Total amount charged to the customer
+- Churn: Whether the customer has churned (Yes or No)
 
