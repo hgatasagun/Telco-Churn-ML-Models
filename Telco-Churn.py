@@ -1,5 +1,5 @@
 #############################################################
-Telco Customer Churn Prediction: Machine Learning Application
+# Telco Customer Churn Prediction: Machine Learning Application
 #############################################################
 
 # The task at hand involves developing a machine learning model capable of predicting customers who are likely to churn from the company.
