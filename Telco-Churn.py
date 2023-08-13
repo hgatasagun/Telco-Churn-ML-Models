@@ -1,47 +1,41 @@
-##################################################################
-# Telco Müşteri Kaybı Tahminlemesi: Makine Öğrenmesi Uygulaması
-#################################################################
+#############################################################
+Telco Customer Churn Prediction: Machine Learning Application
+#############################################################
 
+# The task at hand involves developing a machine learning model capable of predicting customers who are likely to churn from the company.
 
-# Is Problemi
-######################
-# Şirketi terk edecek müşterileri tahmin edebilecek bir makine öğrenmesi modeli geliştirilmesi beklenmektedir.
+# Dataset Story
+###############
+# The dataset contains information about a fictional telecom company operating in California. The company provides home phone and internet services 
+# to 7043 customers during the third quarter. The dataset reveals which customers have decided to discontinue the services, which have remained loyal, 
+# and which have recently subscribed.
 
-
-# Veri Seti Hikayesi
-#######################
-# Telco müşteri kaybı verileri, üçüncü çeyrekte Kaliforniya'daki 7043 müşteriye ev telefonu ve İnternet
-# hizmetleri sağlayan hayali bir telekom şirketi hakkında bilgi içerir. Hangi müşterilerin hizmetlerinden
-# ayrıldığını, kaldığını veya hizmete kaydolduğunu gösterir.
-
-
-# Degiskenler
-# CustomerId: Müşteri İd’si
-# Gender: Cinsiyet
-# SeniorCitizen: Müşterinin yaşlı olup olmadığı (1, 0)
-# Partner: Müşterinin bir ortağı olup olmadığı (Evet, Hayır)
-# Dependents: Müşterinin bakmakla yükümlü olduğu kişiler olup olmadığı (Evet, Hayır)
-# tenure: Müşterinin şirkette kaldığı ay sayısı
-# PhoneService: Müşterinin telefon hizmeti olup olmadığı (Evet, Hayır)
-# MultipleLines: Müşterinin birden fazla hattı olup olmadığı (Evet, Hayır, Telefon hizmeti yok)
-# InternetService: Müşterinin internet servis sağlayıcısı (DSL, Fiber optik, Hayır)
-# OnlineSecurity: Müşterinin çevrimiçi güvenliğinin olup olmadığı (Evet, Hayır, İnternet hizmeti yok)
-# OnlineBackup: Müşterinin online yedeğinin olup olmadığı (Evet, Hayır, İnternet hizmeti yok)
-# DeviceProtection: Müşterinin cihaz korumasına sahip olup olmadığı (Evet, Hayır, İnternet hizmeti yok)
-# TechSupport: Müşterinin teknik destek alıp almadığı (Evet, Hayır, İnternet hizmeti yok)
-# StreamingTV: Müşterinin TV yayını olup olmadığı (Evet, Hayır, İnternet hizmeti yok)
-# StreamingMovies: Müşterinin film akışı olup olmadığı (Evet, Hayır, İnternet hizmeti yok)
-# Contract: Müşterinin sözleşme süresi (Aydan aya, Bir yıl, İki yıl)
-# PaperlessBilling: Müşterinin kağıtsız faturası olup olmadığı (Evet, Hayır)
-# PaymentMethod: Müşterinin ödeme yöntemi (Elektronik çek, Posta çeki, Banka havalesi (otomatik), Kredi kartı (otomatik))
-# MonthlyCharges: Müşteriden aylık olarak tahsil edilen tutar
-# TotalCharges: Müşteriden tahsil edilen toplam tutar
-# Churn: Müşterinin kullanıp kullanmadığı (Evet veya Hayır)
-
+# Variables
+############
+# CustomerId: Customer ID
+# SeniorCitizen: Whether the customer is a senior citizen (1, 0)
+# Partner: Whether the customer has a partner (Yes, No)
+# Dependents: Whether the customer has dependents (Yes, No)
+# Tenure: Number of months the customer has stayed with the company
+# PhoneService: Whether the customer has a phone service (Yes, No)
+# MultipleLines: Whether the customer has multiple lines (Yes, No, No Phone Service)
+# InternetService: Internet service provider for the customer (DSL, Fiber Optic, No)
+# OnlineSecurity: Whether the customer has online security (Yes, No, No Internet Service)
+# OnlineBackup: Whether the customer has online backup (Yes, No, No Internet Service)
+# DeviceProtection: Whether the customer has device protection (Yes, No, No Internet Service)
+# TechSupport: Whether the customer receives tech support (Yes, No, No Internet Service)
+# StreamingTV: Whether the customer has streaming TV (Yes, No, No Internet Service)
+# StreamingMovies: Whether the customer has streaming movies (Yes, No, No Internet Service)
+# Contract: Contract term of the customer (Month-to-Month, One Year, Two Years)
+# PaperlessBilling: Whether the customer has paperless billing (Yes, No)
+# PaymentMethod: Payment method of the customer (Electronic Check, Mailed Check, Bank Transfer (Automatic), Credit Card (Automatic))
+# MonthlyCharges: Monthly amount charged to the customer
+# TotalCharges: Total amount charged to the customer
+# Churn: Whether the customer has churned (Yes or No)
 
 
 ################################################
-# GOREV 1: KESIFCI VERI ANALIZI
+# TASK 1: EXPLORATORY DATA ANALYSIS (EDA)
 ################################################
 
 import numpy as np
@@ -73,9 +67,7 @@ pd.set_option('display.width', 500)
 import warnings
 warnings.simplefilter("ignore")
 
-################################################
-# GOREV 1: KESIFCI VERI ANALIZI
-################################################
+
 df = pd.read_csv('Case studies-Miuul/datasets/Telco-Customer-Churn.csv')
 df.columns = [col.lower() for col in df.columns]
 
@@ -98,7 +90,7 @@ def check_df(dataframe, head=5):
 check_df(df)
 
 
-# Adım 1: Numerik ve kategorik değişkenleri yakalayınız.
+# Capturing numerical and Ccategorical variables
 #############################################################
 def grab_col_names(dataframe, cat_th=10, car_th=20):
 
@@ -127,8 +119,8 @@ cat_cols, num_cols, cat_but_car = grab_col_names(df)
 
 
 
-# Adım 2: Gerekli düzenlemeleri yapınız. (Tip hatası olan değişkenler gibi)
-###########################################################################
+# Correcting data with incorrect types
+######################################
 
 empty_rows = df[df['totalcharges'] == ' '] # bos degerler var
 
@@ -138,12 +130,12 @@ df['totalcharges'].isnull().sum()
 
 
 
-# Adım 3: Numerik ve kategorik değişkenlerin veri içindeki dağılımını gözlemleyiniz.
-###################################################################################
+# Numerical and categorical variable distribution within the data
+##################################################################
 cat_cols, num_cols, cat_but_car = grab_col_names(df)
 
-# Kategorik:
-############
+# Categorical:
+##############
 def cat_summary(dataframe, col_name, plot=False):
     print(pd.DataFrame({col_name: dataframe[col_name].value_counts(),
                         "Ratio": 100 * dataframe[col_name].value_counts() / len(dataframe)}))
@@ -159,8 +151,8 @@ for col in cat_cols:
     else:
         cat_summary(df, col, plot=True)
 
-# Numerik:
-##########
+# Numerical:
+############
 def num_summary(dataframe, numerical_col, plot=False):
     quantiles = [0.05, 0.10, 0.20, 0.30, 0.40, 0.50, 0.60, 0.70, 0.80, 0.90, 0.95, 0.99]
     print(dataframe[numerical_col].describe(quantiles).T)
@@ -176,8 +168,8 @@ for col in num_cols:
 
 
 
-# Adim 4: Kategorik değişkenler ile hedef değişken incelemesini yapınız.
-########################################################################
+# Examining categorical variables in relation to the target variable
+####################################################################
 
 # 'target_summary_with_cat' fonksiyonu hata verdigi icin bu islemi simdilik sonuc gormek icin yaptim.
 def label_encoder(dataframe, col):
@@ -195,10 +187,8 @@ df_encoded, original_values = label_encoder(df, cat_cols)
 cat_cols, num_cols, cat_but_car = grab_col_names(df_encoded)
 
 
-# Onemli degisken tespiti !!!!
-################################
-# def target_summary_with_cat(dataframe, target, categorical_col):
-#   print(pd.DataFrame({'TARGET_MEAN': dataframe.groupby(categorical_col)[target].mean()}))
+# Identification of Important Variables
+#######################################
 
 significant_interactions = []
 
@@ -209,12 +199,9 @@ for col in cat_cols:
         if max_diff > 0.34:
             significant_interactions.append(col)
 
-# for col in cat_cols:
-#    target_summary_with_cat(df, 'churn', col)
 
 
-
-# Adım 5: Aykırı gözlem var mı inceleyiniz.
+# Examination of outliers
 ###########################################
 
 def outlier_thresholds(dataframe, col_name, q1=0.05, q3=0.95):
@@ -237,7 +224,7 @@ for col in num_cols:
 
 
 
-# Adım 6: Eksik gözlem var mı inceleyiniz.
+# Examination of missing values
 ##########################################
 def missing_values_table(dataframe, na_name=False):
     na_columns = [col for col in dataframe.columns if dataframe[col].isnull().sum() > 0]
@@ -254,38 +241,39 @@ missing_values_table(df)
 
 
 ################################################
-# GOREV 2: FEATURE ENGINEERING
+# TASK 2: FEATURE ENGINEERING
 ################################################
 
-# Adım 1: Eksik ve aykırı gözlemler için gerekli işlemleri yapınız.
-###################################################################
+# Performing necessary procedures for missing and outlier observations
+######################################################################
 
-# Aykiri gozlem bulunmadigi icin herhangi bir islem yapilmamistir.
+# No outlier observations were found, so no action has been taken.
 
-# 'totalcharges' degiskeninde yer alan 11 adet eksik degere ortalama atanmistir.
+# 11 missing values in the 'totalcharges' variable have been imputed with the mean.
+
 df['totalcharges'] = df['totalcharges'].fillna(df['totalcharges'].mean())
 
 
 
-# Adım 2: Yeni değişkenler oluşturunuz.
+# Creating new variables
 #######################################
 
-# Aylık harcama oranı
+# Monthly charges ratio
 df['monthlychargesratio'] = df['monthlycharges'] / df['totalcharges']
 
-# Aylık harcama grupları
+# Monthly expenditure groups
 bins = [0, 40.000, 80.000, 120000]
-labels = ['düşük', 'orta', 'yüksek']
+labels = ['low', 'medium', 'high']
 df['monthlychargesgroups'] = pd.cut(df['monthlycharges'], bins=bins, labels=labels)
 
-# Sözleşme süresi ve bağımlı sayısı
+# Contract duration and number of dependents
 df['contractanddependents'] = df['contract'] + '_' + df['dependents']
 
 df.shape
 
 
-# Adım 3: Encoding işlemlerini gerçekleştiriniz.
-################################################
+# Encoding
+###########
 
 # Binary cols - Label encoder
 #############################
@@ -314,9 +302,10 @@ def rare_analyser(dataframe, target, cat_cols):
                             "TARGET_MEAN": dataframe.groupby(col)[target].mean()}), end="\n\n\n")
 
 rare_analyser(df, "churn", cat_cols)
+# No need for rare encoding!
 
 
-# Kalanlar icin - One-hot encoder
+# One-hot encoder
 #################################
 def one_hot_encoder(dataframe, categorical_cols, drop_first=True):
     dataframe = pd.get_dummies(dataframe, columns=categorical_cols, drop_first=drop_first)
@@ -332,8 +321,8 @@ df.head()
 df.shape
 
 
-# 'target_summary_with_cat' yaparken tespit ettigim onemli degiskenlerin carpimini ekledim.
-
+# Adding more new variables using 'Significant Interactions'
+############################################################
 for i, col1 in enumerate(significant_interactions):
     for col2 in significant_interactions[i+1:]:  # Yalnızca sonraki sütunlarla çarp
         new_col_name = f'{col1}_x_{col2}'
@@ -345,8 +334,7 @@ df.head()
 cat_cols, num_cols, cat_but_car = grab_col_names(df)
 
 
-
-# Adım 4: Numerik değişkenler için standartlaştırma yapınız.
+# Standardization for Logistic regression and KNN
 ############################################################
 df_ = df.copy()
 
@@ -355,14 +343,10 @@ df_[num_cols] = scaler.fit_transform(df_[num_cols])
 
 
 #######################################
-# GOREV 3: MODELLEME
+# TASK 3: MODELLING
 #######################################
 
-# Adım 1: Sınıflandırma algoritmaları ile modeller kurup, accuracy skorlarını inceleyip.
-# En iyi 4 modeli seçiniz.
-########################################################################################
-
-# 1.1. Logistic Regression
+# 3.1. Logistic Regression
 ################################################################################################
 y = df_["churn"]
 X = df_.drop(["churn", 'customerid'], axis=1)
@@ -386,7 +370,7 @@ print("Mean: %0.3f and Standard deviation: %0.3f"
 # Mean: 0.850 and Standard deviation: 0.011
 
 
-# 1.2. KNN
+# 3.2. KNN
 ################################################################################################
 knn_model = KNeighborsClassifier(n_neighbors=5)
 
@@ -409,7 +393,7 @@ print("Mean: %0.3f and Standard deviation: %0.3f"
 # Mean: 0.782 and Standard deviation: 0.015
 
 
-# 1.3. Agac modelleri
+# 3.3. Ensemble Models
 ############################################
 y = df["churn"]
 X = df.drop(["churn", "customerid"], axis=1)
@@ -457,15 +441,12 @@ results_df = pd.DataFrame(results)
 
 print(results_df)
 
+#################################
+# 4. HYPERPARAMETER OPTIMIZATION
+#################################
 
-# Adım 2: Seçtiğiniz modeller ile hiperparametre optimizasyonu gerçekleştirin ve bulduğunuz
-# hiparparametreler ile modeli tekrar kurunuz.
-###########################################################################################
-
-# 'Logistic regression', 'Gradient Boosting', 'LGBM' ve 'CatBoost' icin hiperparametre optimizasyonu
-
-# Logistic regression
-#####################
+# 4.1. Logistic regression
+###########################
 log_param_grid = {
     'C': [0.01, 0.1, 1, 2], # karmasik model
     'penalty': ['l1', 'l2'], # l1-Lasso, l2-Ridge
@@ -499,6 +480,8 @@ logistic_results = {
     'ROC AUC': cv_results_log['test_roc_auc'].mean()
 }
 
+# Feature importance for Logistic Regression
+#############################################
 def plot_coefficients(model, features):
     coef = model.coef_[0]
     coef_df = pd.DataFrame({'Feature': features.columns, 'Coefficient': coef})
@@ -514,7 +497,7 @@ def plot_coefficients(model, features):
 plot_coefficients(log_final, X)
 
 
-# Gradient Boosting
+# 4.2. Gradient Boosting
 ####################
 gbm_params = {
     "learning_rate": [0.01, 0.1], # ogrenme hizi
@@ -547,6 +530,8 @@ gbm_results = {
     'ROC AUC': cv_results_gbm['test_roc_auc'].mean()
 }
 
+# Top 5 important features for GBM
+##################################
 def plot_importance(model, features, num=len(X), save=False):
     feature_imp = pd.DataFrame({'Value': model.feature_importances_,
                                 'Feature': features.columns})
@@ -563,6 +548,8 @@ def plot_importance(model, features, num=len(X), save=False):
 
 plot_importance(gbm_final, X, num=5)
 
+# Top 5 least important features for GBM
+########################################
 def plot_least_importance(model, features, num=5, save=False):
     feature_imp = pd.DataFrame({'Value': model.feature_importances_,
                                 'Feature': features.columns})
@@ -580,8 +567,8 @@ def plot_least_importance(model, features, num=5, save=False):
 plot_least_importance(gbm_final, X, num=5)
 
 
-# LightGBM
-###########
+# 4.3. LightGBM
+################
 lgbm_params = {
     "learning_rate": [0.01, 0.02],
     "n_estimators": [450, 480, 500],  # 10000 e kadar denendi.
@@ -612,11 +599,14 @@ lgbm_results = {
     'ROC AUC': cv_results_lgbm['test_roc_auc'].mean()
 }
 
+# Feature importance for LGBM
+##############################
 plot_importance(lgbm_final, X, num=5)
+
 plot_least_importance(gbm_final, X, num=5)
 
 
-# CatBoost
+# 4.4. CatBoost
 #################
 y = df["churn"]
 X = df.drop(["churn", "customerid"], axis=1)
@@ -648,10 +638,14 @@ catboost_results = {
     'ROC AUC': cv_results_catboost['test_roc_auc'].mean()
 }
 
+# Feature importance for CatBoost
+#################################
 plot_importance(catboost_final, X)
 plot_least_importance(gbm_final, X, num=5)
 
-# Sonuçları birarada göster
+#########################
+# 5. Results
+#########################
 results_df2 = pd.DataFrame([logistic_results, gbm_results, lgbm_results, catboost_results],
                           index=['Logistic Regression', 'Gradient Boosting', 'LightGBM', 'CatBoost'])
 
