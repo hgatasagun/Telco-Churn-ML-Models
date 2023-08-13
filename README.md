@@ -1,6 +1,6 @@
 # Telco Customer Churn Prediction: Machine Learning Application
 
-[Website Adı](https://images.squarespace-cdn.com/content/v1/588f9607bebafbc786f8c5f8/1607924812500-Y1JR8L6XP5NKF2YPHDUX/image6.png)
+![Resim Açıklaması](https://images.squarespace-cdn.com/content/v1/588f9607bebafbc786f8c5f8/1607924812500-Y1JR8L6XP5NKF2YPHDUX/image6.png)
 
 The task at hand involves developing a machine learning model capable of predicting customers who are likely to churn from the company.
 
